@@ -1,0 +1,26 @@
+<section class="hero">
+  <div class="container text-center">
+    <div class="logo-large">❤️</div>
+    <h1>Bienvenidos a Deli Shey</h1>
+    <p>La dulzura que tu corazón merece</p>
+  </div>
+</section>
+
+<section class="categories container">
+  <div class="grid">
+    <div class="card cat-card" *ngFor="let cat of categories" (click)="showDetails(cat)">
+      <img [src]="cat.image" [alt]="cat.name">
+      <div class="card-body">
+        <h3>{{ cat.name }}</h3>
+        <p>{{ cat.description }}</p>
+        <button class="btn-primary" [routerLink]="['/category', cat.name]" (click)="$event.stopPropagation()">Ver Productos</button>
+        
+        <div class="details" [class.show]="selectedCategory === cat">
+          <hr>
+          <p>{{ cat.details }}</p>
+          <small>Horarios: 8am - 8pm | Calidad Premium</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

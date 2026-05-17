@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --pastel-pink: #FFD1DC;
+  --pastel-blue: #AEC6CF;
+  --pastel-pink-dark: #f8b1c0;
+  --pastel-blue-dark: #8fb1bd;
+  --text-color: #555;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdfdfd;
+  color: var(--text-color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn-primary {
+  background-color: var(--pastel-pink);
+  color: #fff;
+  padding: 10px 20px;
+  &:hover {
+    background-color: var(--pastel-pink-dark);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--pastel-blue);
+  color: #fff;
+  padding: 10px 20px;
+  &:hover {
+    background-color: var(--pastel-blue-dark);
+  }
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: translateY(-5px);
+  }
+}

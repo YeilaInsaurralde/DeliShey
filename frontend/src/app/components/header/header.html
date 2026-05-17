@@ -1,0 +1,33 @@
+<header class="header">
+  <div class="container nav-container">
+    <div class="logo" routerLink="/">
+      <span class="heart">❤️</span> Deli Shey
+    </div>
+
+    <button class="mobile-toggle" (click)="toggleMenu()">
+      ☰
+    </button>
+
+    <nav class="nav" [class.open]="isMenuOpen">
+      <ul>
+        <li><a routerLink="/" (click)="isMenuOpen=false">Inicio</a></li>
+        <li><a routerLink="/category/Pastelería" (click)="isMenuOpen=false">Pastelería</a></li>
+        <li><a routerLink="/category/Panadería" (click)="isMenuOpen=false">Panadería</a></li>
+        <li><a routerLink="/category/Regalos" (click)="isMenuOpen=false">Regalos</a></li>
+        
+        <li *ngIf="authService.isLoggedIn()">
+          <a routerLink="/cart" class="cart-btn" (click)="isMenuOpen=false">
+            🛒 <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+          </a>
+        </li>
+
+        <li *ngIf="!authService.isLoggedIn()">
+          <button class="btn-primary" routerLink="/login" (click)="isMenuOpen=false">Iniciar Sesión</button>
+        </li>
+        <li *ngIf="authService.isLoggedIn()">
+          <button class="btn-secondary" (click)="logout()">Salir</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,26 @@
+<div class="container py-5">
+  <h2 class="category-title">{{ categoryName }}</h2>
+  
+  <div class="notification" *ngIf="notification" [class.error]="notificationType === 'error'">
+    {{ notification }}
+  </div>
+
+  <div class="product-grid">
+    <div class="card product-card" *ngFor="let product of products">
+      <div class="img-wrapper">
+        <img [src]="product.image" [alt]="product.name">
+      </div>
+      <div class="card-body">
+        <div class="flex-between">
+          <h3>{{ product.name }}</h3>
+          <span class="price">${{ product.price.toFixed(2) }}</span>
+        </div>
+        <p>{{ product.description }}</p>
+        <button class="btn-primary w-100" (click)="addToCart(product)">
+          <span *ngIf="!authService.isLoggedIn()">🔒 </span>
+          {{ authService.isLoggedIn() ? 'Agregar al Carrito' : 'Inicia Sesión' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
