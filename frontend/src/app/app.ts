@@ -7,19 +7,8 @@ import { FooterComponent } from './components/footer/footer';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
-  template: `
-    <app-header></app-header>
-    <main class="content">
-      <router-outlet></router-outlet>
-    </main>
-    <app-footer></app-footer>
-  `,
-  styles: [`
-    .content {
-      min-height: calc(100vh - 160px);
-      padding-top: 80px;
-    }
-  `]
+  templateUrl: './app.html',
+  styleUrl: './app.scss'
 })
 export class App {
   name = 'Deli Shey';
