@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Product } from './product';
-import { AuthService } from './auth';
+import { AuthService } from './auth.services';
+import { Product } from '../models/products/products.models';
 
 export interface CartItem extends Product {
   quantity: number;

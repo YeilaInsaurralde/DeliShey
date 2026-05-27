@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../services/auth';
-import { CartService } from '../../services/cart';
+import { AuthService } from '../../services/auth.services';
+import { CartService } from '../../services/cart.services';
 
 @Component({
   selector: 'app-header',
