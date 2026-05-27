@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CartService, CartItem } from '../../services/cart.services';
+import { CartService } from '../../services/cart.services';
 
 @Component({
   selector: 'app-cart',
@@ -11,15 +11,9 @@ import { CartService, CartItem } from '../../services/cart.services';
   styleUrls: ['./cart.scss']
 })
 export class CartComponent {
-  shippingCost = 5.00;
+  shippingCost = 5.0;
 
   constructor(public cartService: CartService) {}
-
-  get items() {
-    let items: CartItem[] = [];
-    this.cartService.items$.subscribe(i => items = i).unsubscribe();
-    return items;
-  }
 
   get subtotal() {
     return this.cartService.getCartTotal();
@@ -41,3 +35,4 @@ export class CartComponent {
     this.cartService.generateWhatsAppMessage();
   }
 }
+
