@@ -14,7 +14,7 @@
         <li><a routerLink="/category/Pastelería" (click)="isMenuOpen=false">Pastelería</a></li>
         <li><a routerLink="/category/Panadería" (click)="isMenuOpen=false">Panadería</a></li>
         <li><a routerLink="/category/Regalos" (click)="isMenuOpen=false">Regalos</a></li>
-        
+        <li><a routerLink="/contacto" (click)="isMenuOpen=false">Contacto</a></li>
         <li *ngIf="authService.isLoggedIn()">
           <a routerLink="/cart" class="cart-btn" (click)="isMenuOpen=false">
             🛒 <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>

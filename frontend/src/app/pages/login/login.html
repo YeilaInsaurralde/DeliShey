@@ -20,13 +20,7 @@
 
         <label>Email</label>
 
-        <input
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          required
-          placeholder="tu@email.com"
-        >
+        <input type="email" [(ngModel)]="email" name="email" required placeholder="tu@email.com">
 
       </div>
 
@@ -34,22 +28,19 @@
 
         <label>Contraseña</label>
 
-        <input
-          type="password"
-          [(ngModel)]="password"
-          name="password"
-          required
-          placeholder="******"
-        >
+        <input type="password" [(ngModel)]="password" name="password" required placeholder="******">
 
       </div>
 
-      <button
-        type="submit"
-        class="btn-primary w-100"
-      >
+      <button type="submit" class="btn-primary w-100">
         Ingresar
       </button>
+
+      <div class="register-link">
+        <a routerLink="/forgot-password">
+          ¿Olvidaste tu contraseña?
+        </a>
+      </div>
 
     </form>
 

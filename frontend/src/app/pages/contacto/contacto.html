@@ -1,0 +1,176 @@
+<div class="contact-container">
+
+  <div class="contact-info">
+
+    <h2>Contacto</h2>
+
+    <p>
+      Si tienes alguna consulta, completa el formulario
+      o comunícate con nosotros.
+    </p>
+
+    <div class="info-item">
+      📱 +54 11 1234-5678
+    </div>
+
+    <div class="info-item">
+      ✉ contacto@delishey.com
+    </div>
+
+    <div class="info-item">
+      📍 Buenos Aires, Argentina
+    </div>
+
+  </div>
+
+  <div class="contact-form">
+
+    <form [formGroup]="form" (ngSubmit)="enviar()">
+
+      <div class="form-group">
+
+        <label>Nombre</label>
+
+        <input
+          id="campo-nombre"
+          type="text"
+          formControlName="nombre">
+
+        <small
+          class="error"
+          *ngIf="nombre.invalid && nombre.touched">
+
+          El nombre es obligatorio
+
+        </small>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Apellido</label>
+
+        <input
+          type="text"
+          formControlName="apellido">
+
+        <small
+          class="error"
+          *ngIf="apellido.invalid && apellido.touched">
+
+          El apellido es obligatorio
+
+        </small>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Email</label>
+
+        <input
+          type="email"
+          formControlName="email">
+
+        <small
+          class="error"
+          *ngIf="email.hasError('required') && email.touched">
+
+          El email es obligatorio
+
+        </small>
+
+        <small
+          class="error"
+          *ngIf="email.hasError('email') && email.touched">
+
+          Formato de email inválido
+
+        </small>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Asunto</label>
+
+        <input
+          type="text"
+          formControlName="asunto">
+
+        <small
+          class="error"
+          *ngIf="asunto.invalid && asunto.touched">
+
+          El asunto es obligatorio
+
+        </small>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Mensaje</label>
+
+        <textarea
+          rows="6"
+          formControlName="mensaje">
+        </textarea>
+
+        <small
+          class="error"
+          *ngIf="mensaje.hasError('required') && mensaje.touched">
+
+          El mensaje es obligatorio
+
+        </small>
+
+        <small
+          class="error"
+          *ngIf="mensaje.hasError('minlength') && mensaje.touched">
+
+          Debe contener al menos 10 caracteres
+
+        </small>
+
+      </div>
+
+      <button
+        type="submit"
+        class="btn-contact"
+        [disabled]="enviando()">
+
+        {{ enviando() ? 'Enviando...' : 'Enviar' }}
+
+      </button>
+
+      <div
+        class="success-message"
+        *ngIf="enviado()">
+
+        Mensaje enviado correctamente.
+
+      </div>
+
+      <div
+        class="error-message"
+        *ngIf="errorEnvio()">
+
+        {{ errorEnvio() }}
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<a
+  href="https://wa.me/5491112345678"
+  target="_blank"
+  class="whatsapp-float">
+
+  <i class="fa-brands fa-whatsapp"></i>
+
+</a>
