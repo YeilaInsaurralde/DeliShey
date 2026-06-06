@@ -4,6 +4,8 @@ const crypto = require('crypto');
 
 const userModel = require('../models/user.model');
 
+//logica de usuario, autenticado, registrado, recupera password
+
 exports.register = async (userData) => {
     const existingUser = await userModel.findByEmail(userData.email);
     if (existingUser) {
