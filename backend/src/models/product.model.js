@@ -108,3 +108,24 @@ exports.delete = async (id) => {
     return result;
 
 };
+
+//category
+exports.findByCategory =
+async (category) => {
+
+    const sql = `
+        SELECT *
+        FROM products
+        WHERE category = ?
+        ORDER BY id DESC
+    `;
+
+    const [rows] =
+        await db.query(
+            sql,
+            [category]
+        );
+
+    return rows;
+
+};

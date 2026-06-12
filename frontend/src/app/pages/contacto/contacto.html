@@ -137,10 +137,9 @@
 
       <button
         type="submit"
-        class="btn-contact"
-        [disabled]="enviando()">
+        class="btn-contact">
 
-        {{ enviando() ? 'Enviando...' : 'Enviar' }}
+        Enviar por WhatsApp
 
       </button>
 
@@ -148,7 +147,7 @@
         class="success-message"
         *ngIf="enviado()">
 
-        Mensaje enviado correctamente.
+        Tu consulta fue enviada. Será respondida a la brevedad.
 
       </div>
 

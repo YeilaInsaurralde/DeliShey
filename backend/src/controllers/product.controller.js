@@ -72,3 +72,25 @@ exports.destroy = async (req, res, next) => {
         next(error);
     }
 };
+
+//category
+exports.productsByCategory =
+async (req, res, next) => {
+
+    try {
+
+        const products =
+            await productService
+                .getProductsByCategory(
+                    req.params.category
+                );
+
+        res.json(products);
+
+    } catch (error) {
+
+        next(error);
+
+    }
+
+};

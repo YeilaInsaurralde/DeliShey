@@ -1,6 +1,5 @@
 import { Component, inject, signal, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,9 +12,6 @@ import { CommonModule } from '@angular/common';
 export class Contacto implements AfterViewInit {
 
   private fb = inject(FormBuilder);
-  private http = inject(HttpClient);
-
-  private readonly API_URL = 'http://localhost:3000/api/contacto';
 
   form: FormGroup = this.fb.group({
     nombre: ['', Validators.required],
@@ -26,7 +22,6 @@ export class Contacto implements AfterViewInit {
   });
 
   enviado = signal(false);
-  enviando = signal(false);
   errorEnvio = signal('');
 
   get nombre() { return this.form.get('nombre')!; }
@@ -49,41 +44,31 @@ export class Contacto implements AfterViewInit {
       return;
     }
 
-    this.enviando.set(true);
+    const { nombre, apellido, email, asunto, mensaje } = this.form.value;
+
+    const texto = `
+Hola, soy ${nombre} ${apellido}.
+Email: ${email}
+Asunto: ${asunto}
+
+Mensaje:
+${mensaje}
+`;
+
+    const telefono = '54911sinpuntosniguiones';//pones el NUMERO DE TU WHATS Y TE REDIRIGE EL MENSAJE
+
+    const url = `https://wa.me/${telefono}?text=${encodeURIComponent(texto)}`;
+
+    window.open(url, '_blank');
+
+    this.enviado.set(true);
     this.errorEnvio.set('');
 
-    this.http.post(this.API_URL, this.form.value)
-      .subscribe({
+    this.form.reset();
 
-        next: () => {
-
-          this.enviado.set(true);
-          this.enviando.set(false);
-
-          this.form.reset();
-
-          setTimeout(() => {
-            this.enviado.set(false);
-          }, 5000);
-
-        },
-
-        error: (err) => {
-
-          console.error(err);
-
-          this.enviando.set(false);
-
-          this.errorEnvio.set(
-            err.status === 0
-              ? 'No se pudo conectar con el servidor.'
-              : 'Hubo un error al enviar el mensaje.'
-          );
-
-        }
-
-      });
-
+    setTimeout(() => {
+      this.enviado.set(false);
+    }, 5000);
   }
 
 }

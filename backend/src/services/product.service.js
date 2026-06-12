@@ -62,3 +62,12 @@ exports.deleteProduct = async (
     };
 
 };
+
+//category
+exports.getProductsByCategory =
+async (category) => {
+
+    return await productModel
+        .findByCategory(category);
+
+};
