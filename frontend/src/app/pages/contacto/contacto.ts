@@ -55,7 +55,7 @@ Mensaje:
 ${mensaje}
 `;
 
-    const telefono = '54911sinpuntosniguiones';//pones el NUMERO DE TU WHATS Y TE REDIRIGE EL MENSAJE
+    const telefono = '54911123456789';//pones el NUMERO DE TU WHATS Y TE REDIRIGE EL MENSAJE
 
     const url = `https://wa.me/${telefono}?text=${encodeURIComponent(texto)}`;
 

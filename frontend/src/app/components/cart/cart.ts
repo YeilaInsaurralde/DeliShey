@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CartService } from '../../services/cart.services';
+
+import { CartService, CartItem } from '../../services/cart.services';
 
 @Component({
   selector: 'app-cart',
@@ -10,28 +11,36 @@ import { CartService } from '../../services/cart.services';
   templateUrl: './cart.html',
   styleUrls: ['./cart.scss']
 })
-export class CartComponent {
-  shippingCost = 5.0;
+export class CartComponent implements OnInit {
+
+  cartItems: CartItem[] = [];
+  shippingCost = 5.00;
 
   constructor(public cartService: CartService) {}
 
-  get subtotal() {
+  ngOnInit(): void {
+    this.cartService.items$.subscribe(items => {
+      this.cartItems = items;
+    });
+  }
+
+  get subtotal(): number {
     return this.cartService.getCartTotal();
   }
 
-  get total() {
+  get total(): number {
     return this.subtotal + this.shippingCost;
   }
 
-  updateQuantity(id: number, q: number) {
-    this.cartService.updateQuantity(id, q);
+  updateQuantity(id: number, quantity: number): void {
+    this.cartService.updateQuantity(id, quantity);
   }
 
-  remove(id: number) {
+  remove(id: number): void {
     this.cartService.removeFromCart(id);
   }
 
-  checkout() {
+  checkout(): void {
     this.cartService.generateWhatsAppMessage();
   }
 }
