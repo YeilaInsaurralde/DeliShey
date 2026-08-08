@@ -20,6 +20,9 @@
             🛒 <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
           </a>
         </li>
+        <li *ngIf="authService.isAdmin()">
+          <a routerLink="/admin" (click)="isMenuOpen=false">Admin</a>
+        </li>
 
         <li *ngIf="!authService.isLoggedIn()">
           <button class="btn-primary" routerLink="/login" (click)="isMenuOpen=false">Iniciar Sesión</button>

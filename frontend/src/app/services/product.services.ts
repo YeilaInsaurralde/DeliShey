@@ -30,4 +30,24 @@ export class ProductService {
       `${this.apiUrl}/${id}`
     );
   }
+
+  // Crear producto (admin)
+  createProduct(product: Partial<Product>): Observable<Product> {
+    return this.http.post<Product>(this.apiUrl, product);
+  }
+
+  // Editar producto (admin)
+  updateProduct(id: number, product: Partial<Product>): Observable<Product> {
+    return this.http.put<Product>(
+      `${this.apiUrl}/${id}`,
+      product
+    );
+  }
+
+  // Eliminar producto (admin)
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(
+      `${this.apiUrl}/${id}`
+    );
+  }
 }

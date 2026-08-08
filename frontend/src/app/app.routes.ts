@@ -5,6 +5,7 @@ import { ProductListComponent } from './components/product-list/product-list';
 import { CartComponent } from './components/cart/cart';
 import { Register } from './pages/register/register';
 import { Contacto } from './pages/contacto/contacto';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,6 +25,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/reset-password/reset-password')
         .then(c => c.ResetPassword)
+  },
+  {
+    path: 'admin',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/admin/admin')
+        .then(c => c.Admin)
   },
   { path: '**', redirectTo: '' }
 ];
