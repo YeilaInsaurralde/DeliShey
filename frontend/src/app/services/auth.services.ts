@@ -55,6 +55,11 @@ getCurrentUser() {
   return user ? JSON.parse(user) : null;
 }
 
+isAdmin(): boolean {
+  const user = this.getCurrentUser();
+  return !!user && user.role_id === 1;
+}
+
 forgotPassword(email: string) {
   return this.http.post<any>(
     `${this.apiUrl}/forgot-password`,
