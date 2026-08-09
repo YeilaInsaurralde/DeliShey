@@ -22,6 +22,7 @@ export class Contacto implements AfterViewInit {
   });
 
   enviado = signal(false);
+  enviando = signal(false);
   errorEnvio = signal('');
 
   get nombre() { return this.form.get('nombre')!; }
@@ -44,9 +45,13 @@ export class Contacto implements AfterViewInit {
       return;
     }
 
+    this.enviando.set(true);
+    this.errorEnvio.set('');
+    this.enviado.set(false);
+
     const { nombre, apellido, email, asunto, mensaje } = this.form.value;
 
-    const texto = `
+    const textoWhatsApp = `
 Hola, soy ${nombre} ${apellido}.
 Email: ${email}
 Asunto: ${asunto}
@@ -55,20 +60,36 @@ Mensaje:
 ${mensaje}
 `;
 
-    const telefono = '54911123456789';//pones el NUMERO DE TU WHATS Y TE REDIRIGE EL MENSAJE
+    console.log('===== EMAIL SIMULADO DEL FORMULARIO =====');
+    console.log('Para: contacto@delishey.com');
+    console.log(`Asunto: Consulta DeliShey: ${asunto}`);
+    console.log(`
+Nombre: ${nombre} ${apellido}
+Email: ${email}
 
-    const url = `https://wa.me/${telefono}?text=${encodeURIComponent(texto)}`;
-
-    window.open(url, '_blank');
-
-    this.enviado.set(true);
-    this.errorEnvio.set('');
-
-    this.form.reset();
+Mensaje:
+${mensaje}
+    `);
+    console.log('========================================');
 
     setTimeout(() => {
-      this.enviado.set(false);
-    }, 5000);
+
+      const telefono = '54911123456789';
+
+      const urlWhatsApp =
+        `https://wa.me/${telefono}?text=${encodeURIComponent(textoWhatsApp)}`;
+
+      window.open(urlWhatsApp, '_blank');
+
+      this.enviado.set(true);
+      this.enviando.set(false);
+      this.form.reset();
+
+      setTimeout(() => {
+        this.enviado.set(false);
+      }, 5000);
+
+    }, 1000);
   }
 
 }

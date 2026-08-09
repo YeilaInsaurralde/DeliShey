@@ -10,13 +10,16 @@ const isAdmin = require('../middlewares/admin.middleware');
 // ===============================
 
 // Traer todos los productos
+// Ruta pública: cualquier usuario puede ver productos
 router.get('/', controller.index);
 
 // Filtrar productos por categoría
 // IMPORTANTE: va antes de /:id
+// Ruta pública: cualquier usuario puede filtrar productos
 router.get('/category/:category', controller.productsByCategory);
 
 // Traer un producto por ID
+// Ruta pública: cualquier usuario puede ver el detalle
 router.get('/:id', controller.show);
 
 // Crear producto (solo admin)

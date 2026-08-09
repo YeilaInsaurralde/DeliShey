@@ -137,9 +137,10 @@
 
       <button
         type="submit"
-        class="btn-contact">
+        class="btn-contact"
+        [disabled]="enviando()">
 
-        Enviar por WhatsApp
+        {{ enviando() ? 'Enviando...' : 'Enviar consulta' }}
 
       </button>
 
@@ -147,7 +148,7 @@
         class="success-message"
         *ngIf="enviado()">
 
-        Tu consulta fue enviada. Será respondida a la brevedad.
+        Tu consulta fue enviada correctamente. Será respondida a la brevedad.
 
       </div>
 
@@ -166,7 +167,7 @@
 </div>
 
 <a
-  href="https://wa.me/5491112345678"
+  href="https://wa.me/54911123456789"
   target="_blank"
   class="whatsapp-float">
 
