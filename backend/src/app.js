@@ -23,9 +23,14 @@ app.use('/api/users', userRoutes);
 
 app.use('/api/products', productRoutes);
 
-app.use(errorMiddleware);
-
-
 app.use('/api/contacto', contactoRoutes);
+
+// Rutas que no existen
+app.use((req, res) => {
+    res.status(404).json({ message: 'Ruta no encontrada' });
+});
+
+// Siempre al final: atrapa los errores de todas las rutas de arriba
+app.use(errorMiddleware);
 
 module.exports = app;
