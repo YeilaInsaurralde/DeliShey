@@ -1,10 +1,10 @@
-// routes/contacto.router.js
-
 const express = require('express');
 const router = express.Router();
 
 const contactoController = require('../controllers/contacto.controller');
+const validate = require('../middlewares/validate.middleware');
+const { contactoRules } = require('../validators/contacto.validators');
 
-router.post('/', contactoController.enviarContacto);
+router.post('/', contactoRules, validate, contactoController.enviarContacto);
 
 module.exports = router;
