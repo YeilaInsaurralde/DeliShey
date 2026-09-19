@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.services';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -17,10 +16,7 @@ export class ForgotPassword {
   message = '';
   error = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  constructor(private authService: AuthService) { }
 
   onSubmit() {
 
@@ -29,19 +25,13 @@ export class ForgotPassword {
       .subscribe({
 
         next: (res) => {
-
-          this.router.navigate([
-            '/reset-password',
-            res.token
-          ]);
-
-        },       
+          this.message = res.message;
+          this.error = '';
+        },
 
         error: (err) => {
-
-          this.error = err.error.message;
+          this.error = err.error?.message || 'No se pudo enviar el mail';
           this.message = '';
-
         }
 
       });
