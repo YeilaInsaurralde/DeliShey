@@ -1,4 +1,5 @@
 const productModel = require('../models/product.model');
+const HttpError = require('../utils/httpError');
 
 //logica de CRUD de productos
 
@@ -14,11 +15,7 @@ exports.getProductById = async (id) => {
         await productModel.findById(id);
 
     if (!product) {
-
-        throw new Error(
-            'Producto no encontrado'
-        );
-
+        throw new HttpError(404, 'Producto no encontrado');
     }
 
     return product;
@@ -40,6 +37,13 @@ exports.updateProduct = async (
     data
 ) => {
 
+    const product =
+        await productModel.findById(id);
+
+    if (!product) {
+        throw new HttpError(404, 'Producto no encontrado');
+    }
+
     await productModel.update(
         id,
         data
@@ -55,7 +59,12 @@ exports.deleteProduct = async (
     id
 ) => {
 
-    await productModel.delete(id);
+    const result =
+        await productModel.delete(id);
+
+    if (result.affectedRows === 0) {
+        throw new HttpError(404, 'Producto no encontrado');
+    }
 
     return {
         message: 'Producto eliminado'

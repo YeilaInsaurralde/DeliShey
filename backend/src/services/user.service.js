@@ -4,6 +4,7 @@ const crypto = require('crypto');
 
 const userModel = require('../models/user.model');
 const mailService = require('./mail.service');
+const HttpError = require('../utils/httpError');
 
 // Hashea el token antes de guardarlo o buscarlo en la base
 const hashToken = (token) =>
@@ -14,7 +15,7 @@ const hashToken = (token) =>
 exports.register = async (userData) => {
     const existingUser = await userModel.findByEmail(userData.email);
     if (existingUser) {
-        throw new Error('El email ya existe');
+        throw new HttpError(409, 'El email ya existe');
     }
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     userData.password = hashedPassword;
@@ -27,14 +28,14 @@ exports.register = async (userData) => {
 exports.login = async (email, password) => {
     const user = await userModel.findByEmail(email);
     if (!user) {
-        throw new Error('Credenciales inválidas');
+        throw new HttpError(401, 'Credenciales inválidas');
     }
     const validPassword = await bcrypt.compare(
         password,
         user.password
     );
     if (!validPassword) {
-        throw new Error('Credenciales inválidas');
+        throw new HttpError(401, 'Credenciales inválidas');
     }
     const token = jwt.sign(
         {
@@ -85,7 +86,7 @@ exports.forgotPassword = async (email) => {
 exports.resetPassword = async (token, password) => {
     const user = await userModel.findByResetToken(hashToken(token));
     if (!user) {
-        throw new Error('Token inválido');
+        throw new HttpError(400, 'Token inválido');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     await userModel.updatePassword(user.id, hashedPassword);
