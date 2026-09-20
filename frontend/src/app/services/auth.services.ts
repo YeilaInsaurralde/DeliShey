@@ -42,44 +42,68 @@ export class AuthService {
     localStorage.removeItem('role');
   }
 
+  // Lee los datos que trae el token (entre ellos la fecha de vencimiento "exp")
+  private getTokenPayload(): { exp?: number } | null {
+    const token = this.getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const base64 = token
+        .split('.')[1]
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+      return JSON.parse(atob(base64));
+    } catch {
+      return null;
+    }
+  }
+
+  // Hay sesión solo si existe un token y todavía no venció
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    const payload = this.getTokenPayload();
+
+    if (!payload || !payload.exp) {
+      return false;
+    }
+
+    return payload.exp * 1000 > Date.now();
   }
 
   isLoggedIn(): boolean {
-  return this.isAuthenticated();
-}
+    return this.isAuthenticated();
+  }
 
-getCurrentUser() {
-  const user = localStorage.getItem('user');
-  return user ? JSON.parse(user) : null;
-}
+  getCurrentUser() {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
 
-isAdmin(): boolean {
-  const user = this.getCurrentUser();
-  return !!user && user.role_id === 1;
-}
+  isAdmin(): boolean {
+    const user = this.getCurrentUser();
+    return this.isAuthenticated() && !!user && user.role_id === 1;
+  }
 
-forgotPassword(email: string) {
-  return this.http.post<any>(
-    `${this.apiUrl}/forgot-password`,
-    { email }
-  );
+  forgotPassword(email: string) {
+    return this.http.post<any>(
+      `${this.apiUrl}/forgot-password`,
+      { email }
+    );
+  }
 
-}
-
-resetPassword(
-  token: string,
-  password: string
-) {
-
-  return this.http.post<any>(
-    `${this.apiUrl}/reset-password/${token}`,
-    {
-      password
-    }
-  );
-
-}
+  resetPassword(
+    token: string,
+    password: string
+  ) {
+    return this.http.post<any>(
+      `${this.apiUrl}/reset-password/${token}`,
+      {
+        password
+      }
+    );
+  }
 
 }

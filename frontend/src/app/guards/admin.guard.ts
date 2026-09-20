@@ -7,10 +7,17 @@ export const adminGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isLoggedIn() && authService.isAdmin()) {
+  // Sin sesión (o vencida): se limpian los restos y va al login
+  if (!authService.isLoggedIn()) {
+    authService.logout();
+    return router.createUrlTree(['/login']);
+  }
+
+  // Con sesión vigente y rol admin: pasa
+  if (authService.isAdmin()) {
     return true;
   }
 
-  router.navigate(['/']);
-  return false;
+  // Con sesión pero sin ser admin: al inicio
+  return router.createUrlTree(['/']);
 };
