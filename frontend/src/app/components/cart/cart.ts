@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { STORE_CONFIG } from '../../config/store.config';
 
 import { CartService, CartItem } from '../../services/cart.services';
 
@@ -14,7 +15,7 @@ import { CartService, CartItem } from '../../services/cart.services';
 export class CartComponent implements OnInit {
 
   cartItems: CartItem[] = [];
-  shippingCost = 5.00;
+    shippingCost = STORE_CONFIG.shippingCost;
 
   constructor(public cartService: CartService) {}
 

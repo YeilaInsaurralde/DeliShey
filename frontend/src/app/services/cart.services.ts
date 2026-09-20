@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.services';
 import { Product } from '../models/products/products.models';
+import { STORE_CONFIG } from '../config/store.config';
 
 export interface CartItem extends Product {
   quantity: number;
@@ -84,7 +85,7 @@ export class CartService {
     const items = this.itemsSubject.value;
 
     const subtotal = this.getCartTotal();
-    const shipping = 5.00;
+    const shipping = STORE_CONFIG.shippingCost;
     const total = subtotal + shipping;
 
     let message = `Hola Deli Shey! Mi nombre es ${user.name} (${user.email}). Quisiera realizar el siguiente pedido:\n\n`;
@@ -101,7 +102,7 @@ export class CartService {
     const encodedMessage = encodeURIComponent(message);
 
     window.open(
-      `https://wa.me/5491123456789?text=${encodedMessage}`,
+     `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodedMessage}`,
       '_blank'
     );
   }

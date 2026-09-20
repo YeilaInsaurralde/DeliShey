@@ -1,6 +1,7 @@
 import { Component, inject, signal, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { STORE_CONFIG } from '../../config/store.config';
 
 @Component({
   selector: 'app-contacto',
@@ -12,6 +13,8 @@ import { CommonModule } from '@angular/common';
 export class Contacto implements AfterViewInit {
 
   private fb = inject(FormBuilder);
+  
+  whatsappUrl = `https://wa.me/${STORE_CONFIG.whatsappNumber}`;
 
   form: FormGroup = this.fb.group({
     nombre: ['', Validators.required],
@@ -74,7 +77,7 @@ ${mensaje}
 
     setTimeout(() => {
 
-      const telefono = '54911123456789';
+      const telefono = STORE_CONFIG.whatsappNumber;
 
       const urlWhatsApp =
         `https://wa.me/${telefono}?text=${encodeURIComponent(textoWhatsApp)}`;
