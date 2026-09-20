@@ -30,7 +30,13 @@ exports.productRules = [
         .isString().withMessage('La imagen no es válida').bail()
         .matches(/^(\/|https?:\/\/)/)
         .withMessage('La imagen debe ser una ruta (/assets/...) o una URL http(s)')
-        .isLength({ max: 500 }).withMessage('La ruta de la imagen es demasiado larga')
+        .isLength({ max: 500 }).withMessage('La ruta de la imagen es demasiado larga'),
+
+    // estado del producto: true/false (o 1/0). Si no viene, no se modifica
+    body('is_active')
+        .optional({ values: 'null' })
+        .isBoolean().withMessage('El estado del producto no es válido')
+        .toBoolean()
 ];
 
 exports.idParamRule = [

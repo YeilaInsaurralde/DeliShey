@@ -16,6 +16,11 @@ export class ProductService {
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl);
   }
+  
+  // Traer TODOS los productos, activos e inactivos (admin)
+  getAllProductsAdmin(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/admin/all`);
+  }
 
   // Traer productos por categoría
   getProductsByCategory(category: string): Observable<Product[]> {

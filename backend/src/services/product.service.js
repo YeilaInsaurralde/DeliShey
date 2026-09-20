@@ -3,9 +3,17 @@ const HttpError = require('../utils/httpError');
 
 //logica de CRUD de productos
 
+//productos activos (lo que ve el público)
 exports.getAllProducts = async () => {
 
     return await productModel.findAll();
+
+};
+
+//todos los productos, activos e inactivos (solo admin)
+exports.getAllProductsAdmin = async () => {
+
+    return await productModel.findAllAdmin();
 
 };
 
@@ -14,7 +22,8 @@ exports.getProductById = async (id) => {
     const product =
         await productModel.findById(id);
 
-    if (!product) {
+    // un producto inactivo no se le muestra al público
+    if (!product || !product.is_active) {
         throw new HttpError(404, 'Producto no encontrado');
     }
 

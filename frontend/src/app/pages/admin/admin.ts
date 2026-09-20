@@ -39,7 +39,7 @@ export class Admin implements OnInit {
 
   loadProducts(): void {
     this.loading = true;
-    this.productService.getProducts().subscribe({
+        this.productService.getAllProductsAdmin().subscribe({
       next: (data) => {
         this.products = data;
         this.loading = false;

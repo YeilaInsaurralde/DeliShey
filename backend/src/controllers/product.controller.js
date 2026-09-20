@@ -14,6 +14,18 @@ exports.index = async (req, res, next) => {
     }
 };
 
+//todos los productos, activos e inactivos (solo admin)
+exports.indexAdmin = async (req, res, next) => {
+    try {
+        const products =
+            await productService.getAllProductsAdmin();
+        res.json(products);
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 //muestra producto segun el id
 exports.show = async (req, res, next) => {
     try {
