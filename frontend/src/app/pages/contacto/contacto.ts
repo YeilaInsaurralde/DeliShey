@@ -2,6 +2,7 @@ import { Component, inject, signal, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { STORE_CONFIG } from '../../config/store.config';
+import { ContactoService } from '../../services/contacto.services';
 
 @Component({
   selector: 'app-contacto',
@@ -13,7 +14,9 @@ import { STORE_CONFIG } from '../../config/store.config';
 export class Contacto implements AfterViewInit {
 
   private fb = inject(FormBuilder);
-  
+  private contactoService = inject(ContactoService);
+
+  // Link del botón flotante de WhatsApp
   whatsappUrl = `https://wa.me/${STORE_CONFIG.whatsappNumber}`;
 
   form: FormGroup = this.fb.group({
@@ -52,47 +55,27 @@ export class Contacto implements AfterViewInit {
     this.errorEnvio.set('');
     this.enviado.set(false);
 
-    const { nombre, apellido, email, asunto, mensaje } = this.form.value;
+    this.contactoService.enviar(this.form.value).subscribe({
 
-    const textoWhatsApp = `
-Hola, soy ${nombre} ${apellido}.
-Email: ${email}
-Asunto: ${asunto}
+      next: () => {
+        this.enviando.set(false);
+        this.enviado.set(true);
+        this.form.reset();
 
-Mensaje:
-${mensaje}
-`;
+        setTimeout(() => {
+          this.enviado.set(false);
+        }, 5000);
+      },
 
-    console.log('===== EMAIL SIMULADO DEL FORMULARIO =====');
-    console.log('Para: contacto@delishey.com');
-    console.log(`Asunto: Consulta DeliShey: ${asunto}`);
-    console.log(`
-Nombre: ${nombre} ${apellido}
-Email: ${email}
+      error: (err) => {
+        this.enviando.set(false);
+        this.errorEnvio.set(
+          err.error?.message ||
+          'No se pudo enviar el mensaje. Probá de nuevo más tarde.'
+        );
+      }
 
-Mensaje:
-${mensaje}
-    `);
-    console.log('========================================');
-
-    setTimeout(() => {
-
-      const telefono = STORE_CONFIG.whatsappNumber;
-
-      const urlWhatsApp =
-        `https://wa.me/${telefono}?text=${encodeURIComponent(textoWhatsApp)}`;
-
-      window.open(urlWhatsApp, '_blank');
-
-      this.enviado.set(true);
-      this.enviando.set(false);
-      this.form.reset();
-
-      setTimeout(() => {
-        this.enviado.set(false);
-      }, 5000);
-
-    }, 1000);
+    });
   }
 
 }
