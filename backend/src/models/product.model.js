@@ -1,7 +1,24 @@
 const db = require('../database/db');//conexion a bd
 
-//trae los productos de base de datos - obtiene todos
+//trae los productos ACTIVOS (los que ve el público)
 exports.findAll = async () => {
+
+    const sql = `
+        SELECT *
+        FROM products
+        WHERE is_active = TRUE
+        ORDER BY id DESC
+    `;
+
+    const [rows] =
+        await db.query(sql);
+
+    return rows;
+
+};
+
+//trae TODOS los productos, activos e inactivos (solo para el admin)
+exports.findAllAdmin = async () => {
 
     const sql = `
         SELECT *
@@ -16,7 +33,7 @@ exports.findAll = async () => {
 
 };
 
-//busca por id
+//busca por id (no filtra por estado: el service decide qué mostrar)
 exports.findById = async (id) => {
 
     const sql = `
@@ -33,7 +50,7 @@ exports.findById = async (id) => {
 };
 
 
-//crear productos
+//crear productos (si no viene is_active, queda activo)
 exports.create = async (
     productData
 ) => {
@@ -45,9 +62,10 @@ exports.create = async (
             price,
             category,
             description,
-            image
+            image,
+            is_active
         )
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
     `;
 
     const [result] =
@@ -56,14 +74,15 @@ exports.create = async (
             productData.price,
             productData.category,
             productData.description,
-            productData.image
+            productData.image,
+            productData.is_active ?? true
         ]);
 
     return result;
 };
 
 
-//actualiza
+//actualiza (si no viene is_active, se conserva el que ya tenía)
 exports.update = async (
     id,
     productData
@@ -76,7 +95,8 @@ exports.update = async (
             price = ?,
             category = ?,
             description = ?,
-            image = ?
+            image = ?,
+            is_active = COALESCE(?, is_active)
         WHERE id = ?
     `;
 
@@ -87,6 +107,7 @@ exports.update = async (
             productData.category,
             productData.description,
             productData.image,
+            productData.is_active ?? null,
             id
         ]);
 
@@ -109,7 +130,7 @@ exports.delete = async (id) => {
 
 };
 
-//category
+//category (solo productos activos)
 exports.findByCategory =
 async (category) => {
 
@@ -117,6 +138,7 @@ async (category) => {
         SELECT *
         FROM products
         WHERE category = ?
+        AND is_active = TRUE
         ORDER BY id DESC
     `;
 

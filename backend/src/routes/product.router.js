@@ -15,9 +15,13 @@ const {
 // RUTAS DE PRODUCTOS
 // ===============================
 
-// Traer todos los productos
+// Traer todos los productos ACTIVOS
 // Ruta pública: cualquier usuario puede ver productos
 router.get('/', controller.index);
+
+// Traer TODOS los productos, activos e inactivos (solo admin)
+// IMPORTANTE: va antes de /:id
+router.get('/admin/all', auth, isAdmin, controller.indexAdmin);
 
 // Filtrar productos por categoría
 // IMPORTANTE: va antes de /:id
