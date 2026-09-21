@@ -9,30 +9,6 @@ VALUES
 ('client');
 
 -- =========================
--- SEED ADMIN
--- =========================
--- IMPORTANTE:
--- La password debería estar hasheada con bcrypt desde el backend.
--- Esta es solo de ejemplo.
--- Si tu login usa bcrypt, NO pongas texto plano.
-
-INSERT INTO users
-(id, name, email, password, role_id)
-VALUES
-(
-    1,
-    'Admin',
-    'admin@delishey.com',
-    '$2b$10$EjemploHashDePasswordCambiarPorUnoReal',
-    1
-)
-ON DUPLICATE KEY UPDATE
-    name = VALUES(name),
-    email = VALUES(email),
-    password = VALUES(password),
-    role_id = VALUES(role_id);
-
--- =========================
 -- SEED PRODUCTS
 -- =========================
 

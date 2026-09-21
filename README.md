@@ -44,7 +44,7 @@ cd backend
 node src/database/init.js
 ```
 
-> **Ojo:** hacelo solo en una base nueva. El seed vuelve a insertar los productos y usuarios de ejemplo.
+> **Ojo:** hacelo solo en una base nueva. El seed vuelve a insertar los productos de ejemplo.
 
 ### 2. Backend
 
@@ -78,7 +78,7 @@ La app queda en http://localhost:4200.
 
 ## Usuario administrador
 
-El seed crea un usuario `admin@delishey.com`, pero **sin contraseña real**: no se puede iniciar sesión con él. Para tener un administrador:
+El seed **no crea ningún administrador**. Para tener uno, usá un email tuyo, donde recibas mails (la recuperación de contraseña envía el link a esa casilla):
 
 1. Registrate desde la app (`/register`).
 2. Convertí tu usuario en administrador con esta consulta SQL (con tu email):
