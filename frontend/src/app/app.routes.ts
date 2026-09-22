@@ -33,5 +33,12 @@ export const routes: Routes = [
       import('./pages/admin/admin')
         .then(c => c.Admin)
   },
+    {
+    path: 'admin/ventas',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/ventas/ventas')
+        .then(c => c.Ventas)
+  },
   { path: '**', redirectTo: '' }
 ];
