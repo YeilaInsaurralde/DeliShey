@@ -33,7 +33,7 @@
   flex-grow: 1;
   h4 { margin: 0 0 5px 0; }
   p { margin: 0; color: #888; font-size: 0.9rem; }
-  .price { color: var(--pastel-pink-dark); font-weight: bold; }
+  .price { color: var(--rose); font-weight: bold; }
 }
 
 .item-controls {
@@ -53,7 +53,7 @@
     width: 30px;
     height: 30px;
     font-size: 1.2rem;
-    &:hover { color: var(--pastel-pink-dark); }
+    &:hover { color: var(--rose); }
   }
   span {
     width: 30px;
@@ -76,7 +76,7 @@
   &.total {
     font-size: 1.2rem;
     font-weight: bold;
-    color: var(--pastel-pink-dark);
+    color: var(--rose);
   }
 }
 
@@ -86,6 +86,6 @@
 .w-100 { width: 100%; }
 
 .checkout-btn {
-  background-color: #25D366;
-  &:hover { background-color: #128C7E; }
+  background-color: #18804A;
+  &:hover { background-color: #126838; }
 }
