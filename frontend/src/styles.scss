@@ -2,17 +2,25 @@
 :root {
   --pastel-pink: #FFD1DC;
   --pastel-blue: #AEC6CF;
-  --pastel-pink-dark: #f8b1c0;
-  --pastel-blue-dark: #8fb1bd;
-  --text-color: #555;
+  --rose: #B4536E;
+  --rose-deep: #8A3E55;
+  --teal: #4F7A8A;
+  --teal-deep: #3A5C68;
+  --choco: #4A2C39;
+  --text-color: #4A4144;
   --white: #ffffff;
 }
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #fdfdfd;
   color: var(--text-color);
+}
+
+h1, h2, h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
 }
 
 * {
@@ -34,6 +42,7 @@ button {
   cursor: pointer;
   border: none;
   border-radius: 8px;
+  font-family: inherit;
   transition: all 0.3s ease;
 }
 
@@ -44,20 +53,20 @@ button {
 }
 
 .btn-primary {
-  background-color: var(--pastel-pink);
+  background-color: var(--rose);
   color: #fff;
   padding: 10px 20px;
   &:hover {
-    background-color: var(--pastel-pink-dark);
+    background-color: var(--rose-deep);
   }
 }
 
 .btn-secondary {
-  background-color: var(--pastel-blue);
+  background-color: var(--teal);
   color: #fff;
   padding: 10px 20px;
   &:hover {
-    background-color: var(--pastel-blue-dark);
+    background-color: var(--teal-deep);
   }
 }
 

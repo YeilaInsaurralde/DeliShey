@@ -1,15 +1,15 @@
 .hero {
   background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-blue) 100%);
-  padding: 80px 0;
-  color: white;
+  padding: 70px 0;
+  color: var(--choco);
   text-align: center;
   margin-bottom: 50px;
   border-radius: 0 0 50px 50px;
 
   .logo-large {
-    font-size: 5rem;
-    margin-bottom: 20px;
-    animation: pulse 2s infinite;
+    width: 140px;
+    height: auto;
+    margin-bottom: 16px;
   }
 
   h1 {
@@ -19,12 +19,6 @@
 }
 
 .text-center { text-align: center; }
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
 
 .grid {
   display: grid;
