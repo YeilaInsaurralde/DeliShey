@@ -1,0 +1,54 @@
+<section class="ventas container">
+
+  <div class="ventas-header">
+    <h1>Ventas</h1>
+  </div>
+
+  <div class="filtros">
+    <label>
+      Desde
+      <input type="date" [(ngModel)]="from">
+    </label>
+    <label>
+      Hasta
+      <input type="date" [(ngModel)]="to">
+    </label>
+    <button class="btn-primary" (click)="load()">Buscar</button>
+    <button class="btn-secondary" (click)="download()" [disabled]="sales.length === 0">
+      Descargar CSV
+    </button>
+  </div>
+
+  <p class="msg error" *ngIf="error">{{ error }}</p>
+  <p *ngIf="loading">Cargando...</p>
+
+  <table class="ventas-table" *ngIf="!loading && sales.length > 0">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of sales">
+        <td>{{ row.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>{{ row.product_name }}</td>
+        <td>{{ row.quantity }}</td>
+        <td>${{ row.price }}</td>
+        <td>${{ row.item_total }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4"><strong>Total del período</strong></td>
+        <td><strong>${{ total }}</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <p *ngIf="!loading && sales.length === 0 && !error">No hay ventas en ese período.</p>
+
+</section>

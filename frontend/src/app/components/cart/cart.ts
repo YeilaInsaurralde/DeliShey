@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { STORE_CONFIG } from '../../config/store.config';
 
 import { CartService, CartItem } from '../../services/cart.services';
+import { OrderService } from '../../services/order.services';
 
 @Component({
   selector: 'app-cart',
@@ -15,9 +16,12 @@ import { CartService, CartItem } from '../../services/cart.services';
 export class CartComponent implements OnInit {
 
   cartItems: CartItem[] = [];
-    shippingCost = STORE_CONFIG.shippingCost;
+  shippingCost = STORE_CONFIG.shippingCost;
 
-  constructor(public cartService: CartService) {}
+  constructor(
+    public cartService: CartService,
+    private orderService: OrderService
+  ) {}
 
   ngOnInit(): void {
     this.cartService.items$.subscribe(items => {
@@ -42,7 +46,20 @@ export class CartComponent implements OnInit {
   }
 
   checkout(): void {
-    this.cartService.generateWhatsAppMessage();
+
+    const items = this.cartItems.map(item => ({
+      productId: item.id,
+      quantity: item.quantity
+    }));
+
+    const finishCheckout = () => {
+      this.cartService.generateWhatsAppMessage();
+      this.cartService.clearCart();
+    };
+
+    this.orderService.createOrder(items, this.shippingCost).subscribe({
+      next: finishCheckout,
+      error: finishCheckout
+    });
   }
 }
-
