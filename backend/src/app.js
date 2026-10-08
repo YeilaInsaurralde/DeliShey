@@ -5,6 +5,7 @@ const userRoutes = require('./routes/user.routes');
 const productRoutes = require('./routes/product.router');
 const contactoRoutes = require('./routes/contacto.router');
 const orderRoutes = require('./routes/order.router');
+const ratingRoutes = require('./routes/rating.router');
 const errorMiddleware = require('./middlewares/error.middleware');
 
 
@@ -27,6 +28,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/contacto', contactoRoutes);
 
 app.use('/api/orders', orderRoutes);
+
+app.use('/api/ratings', ratingRoutes);
 
 // Rutas que no existen
 app.use((req, res) => {

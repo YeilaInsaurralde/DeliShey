@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.services';
 import { CartService } from '../../services/cart.services';
 import { AuthService } from '../../services/auth.services';
+import { RatingService, ProductRatingsSummary } from '../../services/rating.services';
 import { Product } from '../../models/products/products.models';
 
 @Component({
@@ -22,11 +23,21 @@ export class ProductListComponent implements OnInit {
   notification: string | null = null;
   notificationType: 'success' | 'error' = 'success';
 
+  // Para dibujar las 5 estrellas
+  stars = [1, 2, 3, 4, 5];
+
+  // Ventanita (modal) con las reseñas de un producto
+  showModal = false;
+  modalProduct: Product | null = null;
+  modalData: ProductRatingsSummary | null = null;
+  modalLoading = false;
+
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: CartService,
     public authService: AuthService,
+    private ratingService: RatingService,
     private router: Router
   ) {}
 
@@ -80,5 +91,32 @@ export class ProductListComponent implements OnInit {
     setTimeout(() => {
       this.notification = null;
     }, 3000);
+  }
+
+  // Redondea el promedio para saber cuántas estrellas pintar llenas
+  roundedRating(avg: number | undefined | null): number {
+    return avg ? Math.round(avg) : 0;
+  }
+
+  // Abre la ventanita con las reseñas de un producto
+  openReviews(product: Product): void {
+    this.modalProduct = product;
+    this.showModal = true;
+    this.modalLoading = true;
+    this.modalData = null;
+
+    this.ratingService.getProductRatings(product.id).subscribe({
+      next: (data) => {
+        this.modalData = data;
+        this.modalLoading = false;
+      },
+      error: () => {
+        this.modalLoading = false;
+      }
+    });
+  }
+
+  closeModal(): void {
+    this.showModal = false;
   }
 }
