@@ -90,3 +90,29 @@ CREATE TABLE IF NOT EXISTS order_items (
     ON DELETE SET NULL
 
 );
+
+-- =========================
+-- TABLA PRODUCT_RATINGS
+-- =========================
+
+CREATE TABLE IF NOT EXISTS product_ratings (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating TINYINT NOT NULL,
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    UNIQUE KEY unique_user_product (user_id, product_id),
+
+    FOREIGN KEY (product_id)
+    REFERENCES products(id)
+    ON DELETE CASCADE,
+
+    FOREIGN KEY (user_id)
+    REFERENCES users(id)
+    ON DELETE CASCADE
+
+);

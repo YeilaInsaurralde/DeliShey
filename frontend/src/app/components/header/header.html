@@ -20,6 +20,9 @@
             🛒 <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
           </a>
         </li>
+                <li *ngIf="authService.isLoggedIn()">
+          <a routerLink="/mis-compras" (click)="isMenuOpen=false">Mis compras</a>
+        </li>
          <li *ngIf="authService.isAdmin()">
           <a routerLink="/admin" (click)="isMenuOpen=false">Admin</a>
         </li>

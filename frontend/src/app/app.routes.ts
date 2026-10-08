@@ -6,12 +6,20 @@ import { CartComponent } from './components/cart/cart';
 import { Register } from './pages/register/register';
 import { Contacto } from './pages/contacto/contacto';
 import { adminGuard } from './guards/admin.guard';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: Login },
   { path: 'category/:type', component: ProductListComponent },
   { path: 'cart', component: CartComponent },
+    {
+    path: 'mis-compras',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/mis-compras/mis-compras')
+        .then(c => c.MisCompras)
+  },
   { path: 'contacto',  component: Contacto },
   { path: 'register', component: Register },
   {

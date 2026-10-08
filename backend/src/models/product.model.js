@@ -4,10 +4,12 @@ const db = require('../database/db');//conexion a bd
 exports.findAll = async () => {
 
     const sql = `
-        SELECT *
-        FROM products
-        WHERE is_active = TRUE
-        ORDER BY id DESC
+        SELECT p.*,
+            (SELECT ROUND(AVG(rating), 1) FROM product_ratings pr WHERE pr.product_id = p.id) AS avg_rating,
+            (SELECT COUNT(*) FROM product_ratings pr WHERE pr.product_id = p.id) AS total_ratings
+        FROM products p
+        WHERE p.is_active = TRUE
+        ORDER BY p.id DESC
     `;
 
     const [rows] =
@@ -135,11 +137,13 @@ exports.findByCategory =
 async (category) => {
 
     const sql = `
-        SELECT *
-        FROM products
-        WHERE category = ?
-        AND is_active = TRUE
-        ORDER BY id DESC
+        SELECT p.*,
+            (SELECT ROUND(AVG(rating), 1) FROM product_ratings pr WHERE pr.product_id = p.id) AS avg_rating,
+            (SELECT COUNT(*) FROM product_ratings pr WHERE pr.product_id = p.id) AS total_ratings
+        FROM products p
+        WHERE p.category = ?
+        AND p.is_active = TRUE
+        ORDER BY p.id DESC
     `;
 
     const [rows] =

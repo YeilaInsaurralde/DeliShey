@@ -43,6 +43,22 @@
           </span>
         </div>
 
+        <div class="rating-summary" (click)="openReviews(product)">
+          <span class="stars-display">
+            <span
+              *ngFor="let star of stars"
+              class="star"
+              [class.filled]="star <= roundedRating(product.avg_rating)"
+            >★</span>
+          </span>
+          <span class="rating-count" *ngIf="product.total_ratings">
+            ({{ product.total_ratings }})
+          </span>
+          <span class="rating-count muted" *ngIf="!product.total_ratings">
+            Sin calificaciones
+          </span>
+        </div>
+
         <p>{{ product.description }}</p>
 
         <button
@@ -59,6 +75,51 @@
               : 'Inicia Sesión'
           }}
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ventanita con las reseñas del producto -->
+  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeModal()">✕</button>
+      <h3>{{ modalProduct?.name }}</h3>
+
+      <p *ngIf="modalLoading">Cargando...</p>
+
+      <div *ngIf="!modalLoading && modalData">
+        <div class="modal-summary">
+          <span class="stars-display">
+            <span
+              *ngFor="let star of stars"
+              class="star"
+              [class.filled]="star <= roundedRating(modalData.avg_rating)"
+            >★</span>
+          </span>
+          <span *ngIf="modalData.total_ratings">
+            {{ modalData.avg_rating }} · {{ modalData.total_ratings }} opiniones
+          </span>
+        </div>
+
+        <div class="review-list">
+          <div class="review" *ngFor="let review of modalData.reviews">
+            <div class="review-header">
+              <span class="stars-display small">
+                <span
+                  *ngFor="let star of stars"
+                  class="star"
+                  [class.filled]="star <= review.rating"
+                >★</span>
+              </span>
+              <strong>{{ review.user_name }}</strong>
+            </div>
+            <p class="review-comment" *ngIf="review.comment">{{ review.comment }}</p>
+          </div>
+
+          <p *ngIf="modalData.reviews.length === 0" class="empty-reviews">
+            Todavía no hay comentarios.
+          </p>
+        </div>
       </div>
     </div>
   </div>
