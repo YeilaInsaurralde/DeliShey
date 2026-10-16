@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS deli_shey;
-
-USE deli_shey;
 
 -- =========================
 -- TABLA ROLES
