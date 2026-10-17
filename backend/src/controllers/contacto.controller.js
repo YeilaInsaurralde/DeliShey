@@ -1,48 +1,72 @@
-// controllers/contacto.controller.js
-
-const nodemailer = require('nodemailer');
 
 exports.enviarContacto = async (req, res) => {
+    const { nombre, apellido, email, asunto, mensaje } = req.body;
 
-  const { nombre, apellido, email, asunto, mensaje } = req.body;
+    try {
+        const apiKey = process.env.BREVO_API_KEY;
+        const senderEmail = process.env.BREVO_SENDER_EMAIL;
+        const senderName = process.env.BREVO_SENDER_NAME || 'DeliShey';
+        const recipientEmail = process.env.EMAIL_TO;
 
-  try {
+        if (!apiKey || !senderEmail || !recipientEmail) {
+            throw new Error('Falta configurar el correo en Brevo');
+        }
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      replyTo: email,
-      to: process.env.EMAIL_TO,
-      subject: `Consulta DeliShey: ${asunto}`,
-      text: `
+        const response = await fetch(
+            'https://api.brevo.com/v3/smtp/email',
+            {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'api-key': apiKey,
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sender: {
+                        name: senderName,
+                        email: senderEmail
+                    },
+                    to: [
+                        { email: recipientEmail }
+                    ],
+                    replyTo: {
+                        email: email
+                    },
+                    subject: `Consulta DeliShey: ${asunto}`,
+                    textContent: `
 Nombre: ${nombre} ${apellido}
 Email: ${email}
 
 Mensaje:
 ${mensaje}
-      `
-    });
+                    `
+                }),
+                signal: AbortSignal.timeout(15000)
+            }
+        );
 
-    res.status(200).json({
-      ok: true,
-      message: 'Mensaje enviado correctamente'
-    });
+        if (!response.ok) {
+            const errorBody = await response.text();
 
-  } catch (error) {
+            console.error('Error de Brevo:', {
+                status: response.status,
+                details: errorBody
+            });
 
-    console.error('Error al enviar email:', error);
+            throw new Error('No se pudo enviar el correo');
+        }
 
-    res.status(500).json({
-      ok: false,
-      message: 'Error al enviar email'
-    });
+        res.status(200).json({
+            ok: true,
+            message: 'Mensaje enviado correctamente'
+        });
 
-  }
+    } catch (error) {
+        console.error('Error al enviar email:', error);
+
+        res.status(500).json({
+            ok: false,
+            message: 'Error al enviar email'
+        });
+    }
 };
