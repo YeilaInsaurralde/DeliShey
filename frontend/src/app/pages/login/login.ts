@@ -17,6 +17,8 @@ export class Login {
 
   email = '';
   password = '';
+  showPassword = false;
+  submitting = false;
   error = '';
   success = '';
 
@@ -30,6 +32,11 @@ export class Login {
     this.error = '';
     this.success = '';
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim()) || !this.password) {
+      this.error = 'Ingresá un correo válido y tu contraseña';
+      return;
+    }
+    this.submitting = true;
     const loginData: LoginRequest = {
 
       email: this.email,
@@ -41,6 +48,7 @@ export class Login {
       .subscribe({
 
         next: (response) => {
+          this.submitting = false;
 
           this.authService.saveToken(response.token);
 
@@ -56,9 +64,10 @@ export class Login {
         },
 
         error: (err) => {
+          this.submitting = false;
 
           this.error =
-            err.error.message || 'Error al iniciar sesión';
+            err.error?.message || 'Error al iniciar sesión';
 
         }
 

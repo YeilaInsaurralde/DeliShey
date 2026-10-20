@@ -7,6 +7,22 @@
     </button>
   </div>
 
+  <div *ngIf="toastMessage" class="admin-toast" [class.toast-error]="toastType === 'error'" role="status" aria-live="polite">
+    <span>{{ toastMessage }}</span>
+    <button type="button" class="toast-close" (click)="dismissToast()" aria-label="Cerrar notificación">×</button>
+  </div>
+
+  <div *ngIf="pendingDelete" class="delete-overlay" (click)="cancelDelete()">
+    <div class="delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-title" aria-describedby="delete-description" (click)="$event.stopPropagation()">
+      <h2 id="delete-title">Eliminar producto</h2>
+      <p id="delete-description">¿Querés eliminar <strong>{{ pendingDelete.name }}</strong>? Esta acción no se puede deshacer.</p>
+      <div class="delete-actions">
+        <button type="button" class="btn-secondary" (click)="cancelDelete()" [disabled]="deleting">Cancelar</button>
+        <button type="button" class="btn-primary delete-confirm" (click)="confirmDelete()" [disabled]="deleting">{{ deleting ? 'Eliminando...' : 'Sí, eliminar' }}</button>
+      </div>
+    </div>
+  </div>
+
   <p class="msg error" *ngIf="error">{{ error }}</p>
   <p class="msg success" *ngIf="success">{{ success }}</p>
 
@@ -18,12 +34,14 @@
 
       <label>
         Nombre
-        <input type="text" name="name" [(ngModel)]="formModel.name" required />
+        <input type="text" name="name" [(ngModel)]="formModel.name" maxlength="100" required [attr.aria-invalid]="!!fieldError('name')" />
+        <small class="field-error" *ngIf="fieldError('name')">{{ fieldError('name') }}</small>
       </label>
 
       <label>
         Precio
-        <input type="number" name="price" [(ngModel)]="formModel.price" min="0" step="0.01" required />
+        <input type="number" name="price" [(ngModel)]="formModel.price" min="0.01" max="99999999.99" step="0.01" required [attr.aria-invalid]="!!fieldError('price')" />
+        <small class="field-error" *ngIf="fieldError('price')">{{ fieldError('price') }}</small>
       </label>
 
             <label>
@@ -34,16 +52,20 @@
           <option value="Panadería">Panadería</option>
           <option value="Regalos">Regalos</option>
         </select>
+        <small class="field-error" *ngIf="fieldError('category')">{{ fieldError('category') }}</small>
       </label>
 
-      <label>
-        Imagen (ruta)
-        <input type="text" name="image" [(ngModel)]="formModel.image" />
+      <label class="full">
+        Fotografía (JPG, PNG o WebP, hasta 5 MB)
+        <input type="file" accept="image/jpeg,image/png,image/webp" (change)="onImageSelected($event)" />
+        <small>Al editar, si no seleccionás otra imagen, se conserva la anterior.</small>
+        <img *ngIf="previewUrl || formModel.image" [src]="previewUrl || formModel.image" alt="Vista previa del producto" class="image-preview" />
       </label>
 
       <label class="full">
         Descripción
-        <textarea name="description" [(ngModel)]="formModel.description" rows="3"></textarea>
+        <textarea name="description" [(ngModel)]="formModel.description" rows="3" maxlength="2000"></textarea>
+        <small class="field-error" *ngIf="fieldError('description')">{{ fieldError('description') }}</small>
       </label>
 
       <label class="checkbox">
@@ -52,9 +74,9 @@
       </label>
 
       <div class="form-actions">
-        <button type="button" class="btn-secondary" (click)="cancelForm()">Cancelar</button>
-        <button type="submit" class="btn-primary">
-          {{ editingId ? 'Guardar cambios' : 'Crear producto' }}
+        <button type="button" class="btn-secondary" (click)="cancelForm()" [disabled]="saving">Cancelar</button>
+        <button type="submit" class="btn-primary" [disabled]="saving">
+          {{ saving ? 'Guardando...' : (editingId ? 'Guardar cambios' : 'Crear producto') }}
         </button>
       </div>
 

@@ -18,6 +18,8 @@ export class Register {
   name = '';
   email = '';
   password = '';
+  showPassword = false;
+  submitting = false;
   error = '';
   success = '';
 
@@ -28,6 +30,12 @@ export class Register {
 
   onSubmit(): void {
 
+    this.error = '';
+    if (!this.name.trim() || this.name.length > 100 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email.trim()) || this.password.length < 8 || this.password.length > 72) {
+      this.error = 'Ingresá nombre, correo válido y contraseña entre 8 y 72 caracteres';
+      return;
+    }
+    this.submitting = true;
     const registerData: RegisterRequest = {
 
       name: this.name,
@@ -40,6 +48,7 @@ export class Register {
       .subscribe({
 
         next: () => {
+          this.submitting = false;
 
           this.success = 'Usuario registrado';
 
@@ -48,8 +57,9 @@ export class Register {
         },
 
         error: (err) => {
+          this.submitting = false;
 
-          this.error = err.error.message;
+          this.error = err.error?.message || 'No se pudo registrar';
 
         }
 

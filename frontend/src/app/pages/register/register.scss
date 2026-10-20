@@ -41,3 +41,19 @@
 }
 .alert-error { background-color: #fee2e2; color: #dc2626; }
 .alert-success { background-color: #dcfce7; color: #16a34a; }
+
+
+button:disabled { opacity: 0.65; cursor: wait; }
+
+/* Ojo integrado al campo, en lugar de un botón debajo. */
+.password-field { position: relative; width: 100%; }
+.password-field input { width: 100%; padding-right: 52px; box-sizing: border-box; }
+.password-field .password-toggle {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; padding: 0; border: 0;
+  background: transparent; color: #507e91; cursor: pointer;
+  border-radius: 8px; font-size: 18px;
+}
+.password-field .password-toggle:hover { background: rgba(80,126,145,.1); }
+.password-field .password-toggle:focus-visible { outline: 2px solid #507e91; outline-offset: 1px; }

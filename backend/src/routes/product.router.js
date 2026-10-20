@@ -28,6 +28,12 @@ router.get('/admin/all', auth, isAdmin, controller.indexAdmin);
 // Ruta pública: cualquier usuario puede filtrar productos
 router.get('/category/:category', categoryParamRule, validate, controller.productsByCategory);
 
+// Carga de imágenes: solo administradores autenticados; no persiste en el contenedor.
+router.post('/upload-image', auth, isAdmin, express.raw({
+    type: ['image/jpeg', 'image/png', 'image/webp'],
+    limit: '5mb'
+}), controller.uploadImage);
+
 // Traer un producto por ID
 // Ruta pública: cualquier usuario puede ver el detalle
 router.get('/:id', idParamRule, validate, controller.show);

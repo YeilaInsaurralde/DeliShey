@@ -20,7 +20,7 @@
 
         <label>Email</label>
 
-        <input type="email" [(ngModel)]="email" name="email" required placeholder="tu@email.com">
+        <input type="email" [(ngModel)]="email" name="email" required maxlength="100" placeholder="tu@email.com">
 
       </div>
 
@@ -28,11 +28,23 @@
 
         <label>Contraseña</label>
 
-        <input type="password" [(ngModel)]="password" name="password" required placeholder="******">
+
+        <div class="password-field">
+
+
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required placeholder="******">
+
+
+          <button class="password-toggle" type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+          <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+
+
+        </div>
 
       </div>
 
-      <button type="submit" class="btn-primary w-100">
+      <button type="submit" [disabled]="submitting" class="btn-primary w-100">
         Ingresar
       </button>
 

@@ -18,6 +18,9 @@ export class ResetPassword {
 
   password = '';
   confirmPassword = '';
+  showPassword = false;
+  showConfirmPassword = false;
+  submitting = false;
 
   error = '';
   success = '';
@@ -42,6 +45,7 @@ export class ResetPassword {
     this.error = '';
     this.success = '';
 
+    if (this.password.length < 8 || this.password.length > 72) { this.error = 'La contraseña debe tener entre 8 y 72 caracteres'; return; }
     if (
       this.password !==
       this.confirmPassword
@@ -54,6 +58,7 @@ export class ResetPassword {
 
     }
 
+    this.submitting = true;
     this.authService
       .resetPassword(
         this.token,
@@ -62,6 +67,7 @@ export class ResetPassword {
       .subscribe({
 
         next: (res) => {
+          this.submitting = false;
 
           this.success =
             res.message;
@@ -77,9 +83,10 @@ export class ResetPassword {
         },
 
         error: (err) => {
+          this.submitting = false;
 
           this.error =
-            err.error.message;
+            err.error?.message || 'No se pudo cambiar la contraseña';
 
         }
 

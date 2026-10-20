@@ -28,7 +28,8 @@ DeliShey/
 
 - Node.js 20.19+, 22.12+ o 24+ (requisito de Angular 21; se probó con Node 24)
 - MySQL o MariaDB (por ejemplo, con XAMPP)
-- Una cuenta de Gmail con **contraseña de aplicación** (para enviar los mails de recuperación de contraseña y de contacto)
+- Una cuenta de **Brevo** con clave de API para los correos transaccionales.
+- Una cuenta de **ImgBB** con clave de API para cargar las fotografías de productos desde el panel.
 
 ## Puesta en marcha
 
@@ -78,29 +79,56 @@ La app queda en http://localhost:4200.
 
 ## Usuario administrador
 
-El seed **no crea ningún administrador**. Para tener uno, usá un email tuyo, donde recibas mails (la recuperación de contraseña envía el link a esa casilla):
+Los roles son `1 = admin` y `2 = client`; el panel de administración está en `/admin`. El registro público crea cuentas de cliente, no de administrador.
 
-1. Registrate desde la app (`/register`).
-2. Convertí tu usuario en administrador con esta consulta SQL (con tu email):
+### Primera instalación en una base nueva
 
-```sql
-UPDATE deli_shey.users SET role_id = 1 WHERE email = 'tu_email@ejemplo.com';
+1. Inicializá la base con las tablas `roles` y `users` y verificá que exista el rol `admin` con `id = 1`.
+2. Configurá **temporalmente** en `backend/.env` (local) o en las variables privadas del entorno de ejecución:
+
+```env
+ADMIN_BOOTSTRAP_NAME=Administrador
+ADMIN_BOOTSTRAP_EMAIL=admin@ejemplo.com
+ADMIN_BOOTSTRAP_PASSWORD=REEMPLAZAR_POR_UNA_CONTRASENA_SEGURA
 ```
 
-3. Cerrá sesión y volvé a iniciarla: el rol viaja dentro del token.
+3. Desde `backend/`, ejecutá **una sola vez**:
 
-Los roles son `1 = administrador` y `2 = cliente`. El panel está en `/admin`.
+```bash
+npm run admin:bootstrap
+```
+
+4. Comprobá que el administrador pueda iniciar sesión. Después **eliminá las variables `ADMIN_BOOTSTRAP_*`** del entorno.
+
+El comando crea el primer administrador solamente cuando **no existe ninguno**, comprueba que el correo no esté ocupado y genera un hash con `bcrypt`. Requiere una contraseña de al menos 12 caracteres y hasta 72 bytes. Si ya existe un administrador, se detiene sin modificar cuentas. No se ejecuta automáticamente en `npm start`, `db:init` ni en cada despliegue.
+
+**No incluyas credenciales reales en el README, `.env.example` ni GitHub.** En Railway, configurá las variables de forma temporal y ejecutá el script solamente mediante un procedimiento administrativo autorizado. No es una ruta pública de la API.
+
+### Promoción manual de una cuenta existente
+
+El comando `npm run admin:promote` es una operación separada y excepcional: verifica las credenciales de una cuenta existente y cambia su rol de cliente a administrador. Ejecutalo solo por personal autorizado con acceso al servidor y la base de datos; conocer la contraseña de un cliente por sí solo **no** autoriza a otorgarle privilegios administrativos.
+
+**En despliegues posteriores no se vuelve a crear ni a promocionar al administrador.** Las cuentas que ya existen en la base se conservan.
 
 ## Configuración
 
 | Qué | Dónde |
 |---|---|
-| Variables del servidor (base, JWT, mail) | `backend/.env` |
+| Variables del servidor (base, JWT, Brevo, ImgBB) | `backend/.env` en local; variables privadas del servicio en Railway |
 | URL de la API | `frontend/src/environments/` |
 | Número de WhatsApp y costo de envío | `frontend/src/app/config/store.config.ts` |
-| Imágenes de productos | `frontend/public/assets/` (en el panel se cargan como `/assets/nombre.jpg`) |
+| Imágenes de productos | Se suben a ImgBB desde el panel administrativo; MySQL guarda la URL pública |
 
 Categorías de productos: `Pastelería`, `Panadería` y `Regalos`.
+
+### Servicios externos: ImgBB y Brevo
+
+- **ImgBB:** configurá `IMGBB_API_KEY` solamente en el backend (archivo `.env` local o variable privada del servicio backend en Railway). El panel permite seleccionar una imagen; el backend la carga a ImgBB y almacena la URL resultante en MySQL. No expongas la clave en Angular ni la subas al repositorio.
+- **Brevo:** configurá `BREVO_API_KEY`, `BREVO_SENDER_EMAIL` y `BREVO_SENDER_NAME` en el backend para los correos transaccionales. El remitente debe estar autorizado/verificado en Brevo.
+- En **Railway**, seleccioná el **servicio del backend** y cargá las variables desde la pestaña **Variables** antes de hacer `git push`, ya que el despliegue puede iniciarse automáticamente.
+- En **Vercel** se despliega el frontend; no coloques allí las claves privadas de ImgBB o Brevo.
+
+> Importante: los archivos de inicialización SQL están preparados para `deli_shey` y pueden contener instrucciones `USE deli_shey`. Revisalos antes de ejecutarlos contra una base con otro nombre o con datos existentes.
 
 ## API
 
@@ -122,5 +150,5 @@ Categorías de productos: `Pastelería`, `Panadería` y `Regalos`.
 ## Antes de publicar
 
 - En `frontend/src/environments/environment.ts`, reemplazar la URL de ejemplo por la del backend real.
-- En el `.env` del servidor: `FRONTEND_URL` con la dirección real del frontend, una `JWT_SECRET` propia y larga, y una contraseña para la base de datos.
+- En las variables privadas del backend: `FRONTEND_URL` con la dirección real del frontend, una `JWT_SECRET` propia y larga, credenciales de base y las claves `IMGBB_API_KEY` / `BREVO_API_KEY`.
 - Cambiar los datos de ejemplo del seed.

@@ -23,7 +23,7 @@
         <input
           type="text"
           [(ngModel)]="name"
-          name="name"
+          name="name" required maxlength="100"
           required
         >
 
@@ -36,7 +36,7 @@
         <input
           type="email"
           [(ngModel)]="email"
-          name="email"
+          name="email" required maxlength="100"
           required
         >
 
@@ -46,17 +46,29 @@
 
         <label>Contraseña</label>
 
-        <input
-          type="password"
+
+        <div class="password-field">
+
+
+          <input
+          [type]="showPassword ? 'text' : 'password'"
           [(ngModel)]="password"
           name="password"
-          required
+          required minlength="8" maxlength="72"
         >
+
+
+          <button class="password-toggle" type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+          <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+
+
+        </div>
 
       </div>
 
       <button
-        type="submit"
+        type="submit" [disabled]="submitting"
         class="btn-primary w-100"
       >
         Registrarse

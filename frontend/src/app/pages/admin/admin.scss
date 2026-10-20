@@ -55,13 +55,23 @@
       gap: 6px;
 
       input,
+      select,
       textarea {
         padding: 8px 10px;
         border: 1px solid #ddd;
         border-radius: 8px;
         font-size: 14px;
         font-family: inherit;
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 40px;
+        background-color: #fff;
+        color: var(--text-color);
+        &:focus { outline: 2px solid var(--rose); outline-offset: 1px; }
       }
+      select { cursor: pointer; }
+      .field-error { color: #b3261e; font-size: 12px; }
+      [aria-invalid="true"] { border-color: #b3261e; }
     }
 
     label.full {
@@ -145,3 +155,52 @@
     }
   }
 }
+
+.image-preview { max-width: 240px; max-height: 180px; object-fit: contain; border-radius: 10px; border: 1px solid #ddd; }
+.form-card small { color: #666; }
+
+/* Confirmación de eliminación con estética DeliShey */
+.delete-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(30, 24, 32, .55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.delete-dialog {
+  width: min(100%, 430px);
+  padding: 26px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 14px 45px rgba(0,0,0,.22);
+  color: var(--text-color);
+}
+.delete-dialog h2 { margin: 0 0 12px; color: var(--rose); }
+.delete-dialog p { line-height: 1.5; overflow-wrap: anywhere; }
+.delete-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+.delete-actions button { border-radius: 9px; padding: 10px 16px; cursor: pointer; }
+.delete-actions button:disabled { opacity: .6; cursor: wait; }
+.delete-confirm { background: #b84360; color: white; border: 0; }
+
+/* Notificación no bloqueante tras confirmar o ante un error */
+.admin-toast {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  z-index: 1100;
+  max-width: min(420px, calc(100vw - 40px));
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  background: #e6f4ea;
+  border-left: 4px solid #26834f;
+  color: #185a32;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.13);
+}
+.admin-toast.toast-error { background: #fdecea; color: #8f261e; border-left-color: #c0392b; }
+.toast-close { margin-left: auto; border: 0; background: none; font-size: 22px; cursor: pointer; color: inherit; }

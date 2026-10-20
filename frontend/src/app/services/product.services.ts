@@ -37,6 +37,12 @@ export class ProductService {
     );
   }
 
+  uploadImage(file: File): Observable<{url: string}> {
+    return this.http.post<{url: string}>(`${this.apiUrl}/upload-image`, file, {
+      headers: { 'Content-Type': file.type }
+    });
+  }
+
   // Crear producto (admin)
   createProduct(product: Partial<Product>): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, product);
