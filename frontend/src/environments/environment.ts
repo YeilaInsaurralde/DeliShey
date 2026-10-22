@@ -1,4 +1,4 @@
 
 export const environment = {
-  apiUrl: 'https://delishey-production.up.railway.app/api'
+  apiUrl: 'https://sienna-hamster-360765.hostingersite.com/api'
 };
