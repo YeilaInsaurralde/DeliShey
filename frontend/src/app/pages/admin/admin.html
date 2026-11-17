@@ -84,9 +84,38 @@
 
   </div>
 
+  <div class="product-filters" *ngIf="!loading && products.length > 0">
+    <label class="filter-search">
+      Buscar producto
+      <input type="search" name="productSearch" [(ngModel)]="searchTerm" placeholder="Nombre o categoría" autocomplete="off" />
+    </label>
+    <label>
+      Categoría
+      <select name="categoryFilter" [(ngModel)]="categoryFilter">
+        <option value="">Todas</option>
+        <option value="Pastelería">Pastelería</option>
+        <option value="Panadería">Panadería</option>
+        <option value="Regalos">Regalos</option>
+      </select>
+    </label>
+    <label>
+      Estado
+      <select name="statusFilter" [(ngModel)]="statusFilter">
+        <option value="">Todos</option>
+        <option value="active">Activos</option>
+        <option value="inactive">Inactivos</option>
+      </select>
+    </label>
+    <button type="button" class="clear-filters" (click)="clearFilters()" [disabled]="!searchTerm && !categoryFilter && !statusFilter">Limpiar filtros</button>
+    <p class="filter-count" role="status" aria-live="polite">
+      Mostrando {{ filteredProducts.length }} de {{ products.length }} productos
+    </p>
+  </div>
+
   <p *ngIf="loading">Cargando productos...</p>
 
-  <table class="admin-table" *ngIf="!loading && products.length > 0">
+  <div class="admin-table-wrap" *ngIf="!loading && products.length > 0">
+  <table class="admin-table" *ngIf="filteredProducts.length > 0">
     <thead>
       <tr>
         <th>Producto</th>
@@ -97,7 +126,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products">
+      <tr *ngFor="let product of filteredProducts">
         <td>{{ product.name }}</td>
         <td>{{ product.category }}</td>
         <td>${{ product.price }}</td>
@@ -113,6 +142,11 @@
       </tr>
     </tbody>
   </table>
+  <div class="filter-empty" *ngIf="filteredProducts.length === 0">
+    <p>No se encontraron productos con esos filtros.</p>
+    <button type="button" class="clear-filters" (click)="clearFilters()">Mostrar todos</button>
+  </div>
+  </div>
 
   <p *ngIf="!loading && products.length === 0">No hay productos cargados todavía.</p>
 

@@ -16,6 +16,29 @@ import { Product } from '../../models/products/products.models';
 export class Admin implements OnInit {
 
   products: Product[] = [];
+  searchTerm = '';
+  categoryFilter = '';
+  statusFilter = '';
+
+  get filteredProducts(): Product[] {
+    const query = this.normalizeSearch(this.searchTerm.trim());
+    return this.products.filter(product => {
+      const matchesText = !query || this.normalizeSearch(`${product.name} ${product.category}`).includes(query);
+      const matchesCategory = !this.categoryFilter || product.category === this.categoryFilter;
+      const matchesStatus = !this.statusFilter || (this.statusFilter === 'active' ? !!product.is_active : !product.is_active);
+      return matchesText && matchesCategory && matchesStatus;
+    });
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.categoryFilter = '';
+    this.statusFilter = '';
+  }
+
+  private normalizeSearch(value: string): string {
+    return value.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
   loading = false;
   saving = false;
   attemptedSubmit = false;
