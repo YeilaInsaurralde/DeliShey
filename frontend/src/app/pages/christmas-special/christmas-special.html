@@ -1,0 +1,60 @@
+<div class="christmas-special">
+  <section class="christmas-hero" *ngIf="!collectionOnly" aria-labelledby="christmas-title">
+    <div class="festive-glow" aria-hidden="true"></div>
+    <p class="hero-ornament" aria-hidden="true">✦ ✧ ✦</p>
+    <p class="hero-eyebrow">Edición especial · Fiestas</p>
+    <h1 id="christmas-title">Navidad en <span>DeliShey</span></h1>
+    <div class="hero-divider" aria-hidden="true">✦</div>
+    <p class="hero-description">Edición especial de fiestas con sabores para compartir</p>
+
+    <div class="ideas-grid">
+      <article class="idea-card" *ngFor="let idea of ideas">
+        <img [src]="idea.image" [alt]="idea.name" loading="lazy" />
+        <div class="idea-body">
+          <h2>{{ idea.name }}</h2>
+          <p>{{ idea.description }}</p>
+          <button type="button" class="idea-link" (click)="openIdea(idea.key)" [attr.aria-label]="'Ver producto en la colección navideña'">
+            Ver en la colección <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <button type="button" class="collection-link" (click)="openCollection()">Ver toda la colección navideña <span aria-hidden="true">→</span></button>
+    <p class="photo-note">Fotografías inspiracionales. Encontrá los productos disponibles y sus precios en la colección navideña.</p>
+  </section>
+
+  <section id="coleccion" class="collection" *ngIf="collectionOnly" aria-labelledby="collection-title">
+    <button class="back-special" type="button" (click)="openSpecials()">← Volver a Especiales</button>
+    <div class="collection-heading">
+      <p class="section-eyebrow">Selección de temporada</p>
+      <h2 id="collection-title">Nuestra colección navideña</h2>
+      <p>Todos los especiales de Navidad, reunidos desde Panadería, Pastelería y Regalos.</p>
+      <p *ngIf="selectedIdea && selectedProductId !== null" class="featured-note">Elegiste {{ selectedIdea.name }}. Lo encontrás destacado primero y podés agregarlo al carrito.</p>
+      <p *ngIf="selectedIdea && selectedProductId === null && !loading && !loadError" class="featured-note">Buscaste {{ selectedIdea.name }}. Explorá los productos disponibles de la colección navideña.</p>
+    </div>
+
+    <p class="status-message" *ngIf="loading" role="status">Cargando productos navideños...</p>
+    <p class="status-message" *ngIf="loadError" role="alert">No pudimos cargar los productos. Intentá nuevamente más tarde.</p>
+    <p class="status-message" *ngIf="!loading && !loadError && products.length === 0">
+      Todavía no hay productos navideños cargados. Podés agregarlos desde Admin con categoría Navidad o nombres como «Pan dulce», «Rosca navideña» o «Caja navideña».
+    </p>
+
+    <div *ngIf="message" class="cart-message" [class.is-error]="messageType === 'error'" role="status">{{ message }}</div>
+
+    <div class="products-grid" *ngIf="!loading && !loadError && products.length > 0">
+      <article class="sale-card" *ngFor="let product of products" [class.sale-card-featured]="product.id === selectedProductId">
+        <img [src]="product.image || '/assets/navidad/caja-navidena.jpg'" [alt]="product.name" loading="lazy" />
+        <div class="sale-body">
+          <span *ngIf="product.id === selectedProductId" class="featured-badge">Tu selección</span>
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description }}</p>
+          <strong class="sale-price">$ {{ product.price | number:'1.2-2' }}</strong>
+          <button type="button" class="buy-button" (click)="addToCart(product)">
+            {{ authService.isLoggedIn() ? 'Agregar al carrito' : 'Iniciar sesión para comprar' }}
+          </button>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>

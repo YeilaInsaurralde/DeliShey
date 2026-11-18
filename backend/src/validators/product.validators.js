@@ -1,7 +1,7 @@
 const { body, param } = require('express-validator');
 
 // Tienen que coincidir exactamente con los links del header
-const CATEGORIES = ['Pastelería', 'Panadería', 'Regalos'];
+const CATEGORIES = ['Pastelería', 'Panadería', 'Regalos', 'Navidad'];
 
 exports.productRules = [
     body('name')

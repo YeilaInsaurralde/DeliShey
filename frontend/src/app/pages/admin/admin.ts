@@ -139,7 +139,7 @@ export class Admin implements OnInit {
     switch (field) {
       case 'name': return !name ? 'Ingresá el nombre del producto.' : name.length > 100 ? 'Máximo 100 caracteres.' : '';
       case 'price': return !Number.isFinite(price) || price <= 0 ? 'Ingresá un precio mayor que cero.' : price >= 100000000 ? 'El precio supera el máximo permitido.' : '';
-      case 'category': return !['Pastelería', 'Panadería', 'Regalos'].includes(category) ? 'Seleccioná una categoría válida.' : '';
+      case 'category': return !['Pastelería', 'Panadería', 'Regalos', 'Navidad'].includes(category) ? 'Seleccioná una categoría válida.' : '';
       case 'description': return description.length > 2000 ? 'Máximo 2000 caracteres.' : '';
     }
   }
@@ -152,7 +152,7 @@ export class Admin implements OnInit {
     const price = Number(this.formModel.price);
     const description = this.formModel.description || '';
     if (!name || name.length > 100 || !Number.isFinite(price) || price <= 0 || price >= 100000000 ||
-        !['Pastelería', 'Panadería', 'Regalos'].includes(this.formModel.category || '') || description.length > 2000) {
+        !['Pastelería', 'Panadería', 'Regalos', 'Navidad'].includes(this.formModel.category || '') || description.length > 2000) {
       this.error = 'Corregí los campos señalados antes de guardar.';
       return;
     }

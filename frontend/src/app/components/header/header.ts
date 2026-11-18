@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.services';
@@ -20,11 +20,15 @@ export class HeaderComponent {
     private router: Router
   ) {}
 
+  @HostListener('document:keydown.escape')
+  closeMenuOnEscape() { this.isMenuOpen = false; }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
   logout() {
+    this.isMenuOpen = false;
     this.authService.logout();
     this.router.navigate(['/']);
   }

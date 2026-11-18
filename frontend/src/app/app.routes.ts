@@ -13,6 +13,8 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'category/:type', component: ProductListComponent },
   { path: 'cart', component: CartComponent },
+  { path: 'especiales/coleccion', loadComponent: () => import('./pages/christmas-special/christmas-special').then(m => m.ChristmasSpecial) },
+  { path: 'especiales', loadComponent: () => import('./pages/christmas-special/christmas-special').then(m => m.ChristmasSpecial) },
     {
     path: 'mis-compras',
     canActivate: [authGuard],

@@ -1,0 +1,60 @@
+/* Estilos exclusivos de /especiales: no afectan el resto de DeliShey. */
+:host { display: block; }
+.christmas-special { color: #f8ecd3; background: #630a16; }
+.christmas-hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  padding: 55px 22px 66px; text-align: center;
+  background: linear-gradient(#59031533,#59031566), url('/assets/navidad/marco-festivo.webp') center top / cover no-repeat, #630a16;
+}
+.festive-glow { position: absolute; left: 0; right: 0; top: 0; height: 5px;
+  background: repeating-linear-gradient(90deg,#d6ad52 0 25px,#fff2bb 25px 29px,#d6ad52 29px 78px); box-shadow: 0 0 19px 6px #f8c76666; }
+.hero-ornament, .hero-eyebrow, .hero-divider { color: #e5bf72; }
+.hero-ornament { margin: 0 0 4px; letter-spacing: 13px; font-size: 22px; }
+.hero-eyebrow { margin: 0; letter-spacing: 3px; text-transform: uppercase; font-size: 12px; }
+.christmas-hero h1 { margin: 12px 0 8px; font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 400; font-size: clamp(42px, 6.6vw, 86px); line-height: 1.08; color: #f5cf87; }
+.christmas-hero h1 span { font-style: normal; font-size: 1.12em; display: block; }
+.hero-divider { font-size: 22px; }
+.hero-description { font-family: Georgia,serif; font-style: italic; font-size: clamp(18px,2.2vw,26px); margin: 9px auto 38px; max-width: 740px; }
+.ideas-grid,.products-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); }
+.ideas-grid { max-width: 1210px; gap: 14px; margin: 0 auto 34px; }
+.idea-card { min-width: 0; text-align: left; color: #5b161e; background: #f9f0dc; border: 1px solid #d2ab60; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 20px #24000655; }
+.idea-card img,.sale-card img { width: 100%; object-fit: cover; }
+.idea-card img { display: block; aspect-ratio: 1.35; }
+.idea-body { padding: 17px 20px 21px; }
+.idea-body h2 { color: #681321; font: 700 22px/1.25 Georgia,serif; margin: 0 0 8px; }
+.idea-body p { color: #4f3832; font-size: 14px; margin: 0; line-height: 1.55; }
+.collection-link,.idea-link,.back-special,.buy-button { border-radius: 999px; font-weight: 700; }
+.collection-link { display: inline-flex; gap: 14px; justify-content: center; align-items: center; padding: 13px 29px; color: #ffe7ae; border: 2px solid #e0bd6a; background: #620c16; }
+.collection-link:hover { color: #fff; background: #861126; }
+.photo-note { font-size: 12px; color: #e6cda7; margin: 18px 0 0; }
+.collection { background: #fff7e9; color: #4f2526; padding: 60px 22px 90px; scroll-margin-top: 90px; }
+.collection-heading { text-align: center; margin-bottom: 30px; }
+.collection-heading h2 { color: #741523; font-size: clamp(28px,3vw,42px); margin: 6px 0; }
+.collection-heading p { margin: 8px 0; }
+.section-eyebrow { color: #9f6b2e; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+.status-message { text-align: center; padding: 30px; max-width: 650px; margin: 0 auto; }
+.products-grid { max-width: 1200px; margin: auto; gap: 18px; }
+.sale-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #ecd6bc; display: flex; flex-direction: column; box-shadow: 0 8px 16px #472a1312; }
+.sale-card img { aspect-ratio: 1.3; }
+.sale-body { padding: 20px; display: flex; flex: 1; flex-direction: column; gap: 12px; }
+.sale-body h3 { margin: 0; color: #681321; font-size: 21px; }
+.sale-body p { flex: 1; margin: 0; line-height: 1.5; }
+.sale-price { font-size: 21px; color: #741523; }
+.buy-button { display: block; width: 100%; background: #830f25; color: white; padding: 12px 18px; }
+.buy-button:hover { background: #a11a36; }
+.cart-message { max-width: 660px; margin: 10px auto 25px; padding: 12px; text-align: center; color: #216342; background: #e9f5eb; border-radius: 10px; }
+.cart-message.is-error { color: #882b2b; background: #ffebeb; }
+@media (max-width: 900px) { .ideas-grid,.products-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 580px) { .christmas-hero { padding: 38px 14px 55px; } .ideas-grid,.products-grid { grid-template-columns: 1fr; } .idea-card img { aspect-ratio: 1.65; } .idea-body { padding: 15px; } .collection { padding: 48px 16px 70px; } }
+
+.idea-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; background: transparent; color: #811831; border: 1px solid #bc8c53; padding: 8px 14px; }
+.idea-link:hover { background: #f1dfc0; }
+@media (max-width: 900px) { .christmas-hero { background-size: auto 780px; } }
+
+.back-special { background: transparent; color: #8a2a3c; border: 1px solid #bf9258; padding: 10px 16px; margin: 0 auto 24px; display: block; }
+.back-special:hover { background: #f9e7cd; }
+
+/* Destaca el producto elegido desde una tarjeta de la portada navideña. */
+.featured-note { color: #7c2636; font-weight: 600; }
+.sale-card-featured { border: 2px solid #b27a25; box-shadow: 0 0 0 3px #f1dab0; }
+.featured-badge { align-self: flex-start; color: #762034; background: #fff1d2; border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 700; }
